@@ -83,8 +83,12 @@ public class QuikIndexBar extends View {
 			mPaint.getTextBounds(letter, 0, letter.length(), bounds);
 			int letterHeight = bounds.height();
 			int y = (int) (i * cellHeight + cellHeight / 2.0f + letterHeight / 2.0f);
+
+			// 根据按下的字母，设置画笔颜色
+			mPaint.setColor(touchIndex == i ? Color.GRAY : Color.WHITE);
 			// 绘制文本A-Z
 			canvas.drawText(letter, x, y, mPaint);
+			// 根据按下的字母，设置画笔颜色
 
 		}
 	}
@@ -117,6 +121,7 @@ public class QuikIndexBar extends View {
 						listener.onLetterUpdate(LETTERS[index]);
 					}
 					touchIndex = index;
+
 				}
 			}
 			break;
@@ -127,8 +132,8 @@ public class QuikIndexBar extends View {
 		default:
 			break;
 		}
-
-		return super.onTouchEvent(event);
+		invalidate();
+		return true;
 	}
 
 	@Override
