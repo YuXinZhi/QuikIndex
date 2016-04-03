@@ -28,6 +28,31 @@ public class QuikIndexBar extends View {
 	private float cellHeight;
 	private int touchIndex;
 
+	/**
+	 * 暴露一个字母监听
+	 * 
+	 * @author Ben
+	 *
+	 */
+	public interface OnLetterUpdateListener {
+		void onLetterUpdate(String letter);
+	}
+
+	private OnLetterUpdateListener listener;
+
+	public OnLetterUpdateListener getListener() {
+		return listener;
+	}
+
+	/**
+	 * 设置字母更新监听
+	 * 
+	 * @param listener
+	 */
+	public void setListener(OnLetterUpdateListener listener) {
+		this.listener = listener;
+	}
+
 	public QuikIndexBar(Context context) {
 		this(context, null);
 	}
@@ -72,9 +97,12 @@ public class QuikIndexBar extends View {
 			// 获取当前触摸到的字母索引
 			index = (int) (event.getY() / cellHeight);
 			if (index >= 0 && index < LETTERS.length) {
+
 				// 判断是否和上次触摸到的一样
 				if (index != touchIndex) {
-					ToastUtils.showToastShort(getContext(), LETTERS[index]);
+					if (listener != null) {
+						listener.onLetterUpdate(LETTERS[index]);
+					}
 					touchIndex = index;
 				}
 			}
@@ -85,7 +113,9 @@ public class QuikIndexBar extends View {
 			if (index >= 0 && index < LETTERS.length) {
 				// 判断是否和上次触摸到的一样
 				if (index != touchIndex) {
-					ToastUtils.showToastShort(getContext(), LETTERS[index]);
+					if (listener != null) {
+						listener.onLetterUpdate(LETTERS[index]);
+					}
 					touchIndex = index;
 				}
 			}
